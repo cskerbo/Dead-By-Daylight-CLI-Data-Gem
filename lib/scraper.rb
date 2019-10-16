@@ -20,10 +20,10 @@ class Scraper
     page = Nokogiri::HTML(open("https://deadbydaylight.gamepedia.com/Dead_by_Daylight_Wiki"))
     killers = []
 
-    killer_list = page.css('div#fpkiller')
+    killer_list = page.css('div#fpkiller.fpbox div.fplinks div.link')
     killer_list.each do |killer|
 
-      name = killer.css('div.link').text
+      name = killer.css('a').text
       killers << name
     end
     puts killers
