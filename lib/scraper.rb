@@ -6,9 +6,17 @@ class Scraper
 
   def self.scrape_survivors
     page = Nokogiri::HTML(open("https://deadbydaylight.gamepedia.com/Survivors"))
+    survivors = []
 
-    binding.pry
+    survivor_list = page.css('div[style*="flex:1"]')
+    survivor_list.each do |survivor|
+      name = survivor.css("a").attribute("title").text
+      survivors << name
+
+    end
+puts survivors
 
   end
-self.scrape_survivors
+scrape_survivors
+
 end
