@@ -13,7 +13,7 @@ class Scraper
       name = survivor.css("a").attribute("title").text
       survivors << name
     end
-    puts survivors
+
   end
 
   def self.scrape_killers
@@ -22,12 +22,10 @@ class Scraper
 
     killer_list = page.css('div#fpkiller.fpbox div.fplinks div.link')
     killer_list.each do |killer|
-
       name = killer.css('a').text
       killers << name
     end
-    puts killers
+
   end
-scrape_survivors
-scrape_killers
+
 end
