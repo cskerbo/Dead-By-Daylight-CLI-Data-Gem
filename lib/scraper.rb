@@ -12,11 +12,22 @@ class Scraper
     survivor_list.each do |survivor|
       name = survivor.css("a").attribute("title").text
       survivors << name
-
     end
-puts survivors
+    puts survivors
+  end
 
+  def self.scrape_killers
+    page = Nokogiri::HTML(open("https://deadbydaylight.gamepedia.com/Dead_by_Daylight_Wiki"))
+    killers = []
+
+    killer_list = page.css('div#fpkiller')
+    killer_list.each do |killer|
+
+      name = killer.css('div.link').text
+      killers << name
+    end
+    puts killers
   end
 scrape_survivors
-
+scrape_killers
 end
