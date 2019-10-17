@@ -28,18 +28,19 @@ class Scraper
 
   def self.scrape_perks
     page = Nokogiri::HTML(open("https://deadbydaylight.gamepedia.com/Perks"))
-    perks = []
+    all_perks = []
+    survivor_perks = []
+    killer_perks = []
 
     perk_extract = page.css('div.mw-parser-output')
     perk_extract.each do |perk|
       perks_isolated = perk.css('table.wikitable.sortable tr th[2] a[1]')
         perks_isolated.each do |item|
           final_perk = item.attribute('title').text
-          perks << final_perk
-
+          all_perks << final_perk
+          survivor_perks = all_perks[0...70]
+          killer_perks = all_perks[71...133]
       end
     end
-puts perks
   end
-scrape_perks
 end
