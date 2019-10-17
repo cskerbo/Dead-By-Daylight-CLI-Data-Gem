@@ -65,8 +65,6 @@ end
         perk_name = item.attribute('title').text
       perk_desc = perk.css('table.wikitable.sortable tr td')
         perk_desc.each do |desc|
-
-
           perk_description = desc.css('p').text
           perk_info = {:name => perk_name, :description => perk_description}
           all_perks << perk_info
