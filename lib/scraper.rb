@@ -13,6 +13,7 @@ class Scraper
       name = survivor.css("a").attribute("title").text
       survivors << name
     end
+    survivors
   end
 
   def self.scrape_killers
@@ -24,6 +25,7 @@ class Scraper
       name = killer.css('a').text
       killers << name
     end
+    killers
   end
 
   def self.scrape_perks
