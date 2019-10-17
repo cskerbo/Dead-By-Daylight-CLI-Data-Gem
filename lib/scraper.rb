@@ -24,7 +24,7 @@ class Scraper
     survivor_hash = survivors.group_by {|h1| h1[:name]}.map do |k, v|
       {:name => k, :bio => v.map {|h2| h2[:bio] }.join}
     end
-survivor_hash
+  survivor_hash
 end
 
 
@@ -36,9 +36,20 @@ end
     killer_list = page.css('div#fpkiller.fpbox div.fplinks div.link')
     killer_list.each do |killer|
       name = killer.css('a').text
-      killers << name
+      bio_link = killer.css('a').attribute('href').value
+      bio_page = Nokogiri::HTML(open("https://deadbydaylight.gamepedia.com#{bio_link}"))
+      bio = bio_page.css('div.mw-parser-output i').each do |line|
+        text = line.text.strip
+        if text.length > 300
+          killer_info = {:name => name, :bio => text}
+          killers << killer_info
+        end
+      end
     end
-    killers
+    killer_hash = killers.group_by {|h1| h1[:name]}.map do |k, v|
+      {:name => k, :bio => v.map {|h2| h2[:bio] }.join}
+    end
+    killer_hash
   end
 
   def self.scrape_perks
@@ -58,5 +69,4 @@ end
       end
     end
   end
-scrape_survivors
 end
