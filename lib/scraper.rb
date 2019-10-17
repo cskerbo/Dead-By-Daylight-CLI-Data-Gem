@@ -61,12 +61,22 @@ end
     perk_extract = page.css('div.mw-parser-output')
     perk_extract.each do |perk|
       perks_isolated = perk.css('table.wikitable.sortable tr th[2] a[1]')
-        perks_isolated.each do |item|
-          final_perk = item.attribute('title').text
-          all_perks << final_perk
+      perks_isolated.each do |item|
+        perk_name = item.attribute('title').text
+      perk_desc = perk.css('table.wikitable.sortable tr td')
+        perk_desc.each do |desc|
+
+
+          perk_description = desc.css('p').text
+          perk_info = {:name => perk_name, :description => perk_description}
+          all_perks << perk_info
           survivor_perks = all_perks[0...70]
           killer_perks = all_perks[71...133]
       end
     end
+    end
+
+    puts survivor_perks
   end
+  scrape_perks
 end
