@@ -30,12 +30,14 @@ class Scraper
     page = Nokogiri::HTML(open("https://deadbydaylight.gamepedia.com/Perks"))
     perks = []
 
-    perk_extract = page.css('div.mw-parser-output table.wikitable.sortable tr th')
+    perk_extract = page.css('div.mw-parser-output')
     perk_extract.each do |perk|
-      perks_isolated = perk.css('a').text
-      binding.pry
-        perks << perks_isolated
+      perks_isolated = perk.css('table.wikitable.sortable tr th[2] a[1]')
+        perks_isolated.each do |item|
+          final_perk = item.attribute('title').text
+          perks << final_perk
 
+      end
     end
 puts perks
   end
