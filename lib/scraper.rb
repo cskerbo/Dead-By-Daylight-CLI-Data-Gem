@@ -70,9 +70,11 @@ end
         perk_complete = {:name => name, :description => description}
         all_perks << perk_complete
       end
-      survivor_perks = all_perks[0...70]
-      killer_perks = all_perks[71...133]
     end
+    survivor_perks = all_perks[0...70]
+    #move to CLI when needed
+    #survivor_perk_names = survivor_perks.each {|k, v| "#{k[:name]}"}
+    killer_perks = all_perks[71...133]
   end
   scrape_perks
 end
