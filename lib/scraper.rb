@@ -59,22 +59,20 @@ end
     killer_perks = []
 
     perk_extract = page.css('div.mw-parser-output')
-    perk_extract.each do |perk|
-      perks_isolated = perk.css('table.wikitable.sortable tr th[2] a[1]')
-      perks_isolated.each do |item|
-        perk_name = item.attribute('title').text
-      perk_desc = perk.css('table.wikitable.sortable tr td')
-        perk_desc.each do |desc|
-          perk_description = desc.css('p').text
-          perk_info = {:name => perk_name, :description => perk_description}
-          all_perks << perk_info
-          survivor_perks = all_perks[0...70]
-          killer_perks = all_perks[71...133]
+    #key, value map as loop
+    perk_extract.each do |item|
+      perk_name_extract = item.css('table.wikitable.sortable tr th[2] a[1]')
+      perk_name = perk_name_extract.map {|name| name.attribute('title').text}
+      perk_description_extract = item.css('table.wikitable.sortable tbody tr td')
+      perk_description = perk_description_extract.map {|description| description.text}
+      perk_hash = Hash[perk_name.zip(perk_description.map {|i| i.include?(',') ? (i.split /, /) : i})]
+      perk_list = perk_hash.each do |name, description|
+        perk_complete = {:name => name, :description => description}
+        all_perks << perk_complete
       end
+      survivor_perks = all_perks[0...70]
+      killer_perks = all_perks[71...133]
     end
-    end
-
-    puts survivor_perks
   end
   scrape_perks
 end
