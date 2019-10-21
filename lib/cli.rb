@@ -1,5 +1,6 @@
 require_relative "scraper.rb"
 require_relative "survivor.rb"
+require_relative "killer.rb"
 require 'colorize'
 
 
