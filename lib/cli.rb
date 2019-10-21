@@ -13,12 +13,18 @@ class CLI
      to all characters in DBD, their bios, and all available perks.\nWith this\n
      information, you can create your own custom character loadout. Try it now!\n
      Please select either survivor or killer."
-    puts "1. Survivor\n2. Killer"
+    puts "1. Survivor\n".colorize(:blue) + "2. Killer".colorize(:red)
     user_input = gets.strip
     if user_input == "1"
-      display_survivors
+      display_all_survivors
+      puts "Enter the number of the survivor you would like to learn about:"
+      survivor_selection = gets.strip
+      display_selected_survivor(survivor_selection)
     elsif user_input == "2"
-      display_killers
+      display_all_killers
+      puts "Enter the number of the survivor you would like to learn about:"
+      killer_selection = gets.strip
+      display_selected_killer(killer_selection)
     end
   end
 
@@ -32,21 +38,36 @@ class CLI
     Killer.create_from_scrape(killer_hash)
   end
 
-  def display_survivors
-    counter = 1
-    Survivor.all.each do |survivor|
-      puts "#{counter}." + " #{survivor.name}".colorize(:blue)
+  def display_all_survivors
+    Survivor.all.each.with_index do |survivor, index|
+      puts "#{index + 1}." + " #{survivor.name}".colorize(:blue)
       puts "---------------------".colorize(:green)
-      counter += 1
     end
   end
 
-  def display_killers
-    counter = 1
-    Killer.all.each do |killer|
-      puts "#{counter}." + " #{killer.name}".colorize(:blue)
+  def display_selected_survivor(survivor_selection)
+    Survivor.all.each.with_index do |survivor, index|
+      if survivor_selection.to_i - 1 == index
+        puts "Name:" + " #{survivor.name}".colorize(:blue)
+        puts "Bio:" + " #{survivor.bio}".colorize(:green)
+      end
+    end
+  end
+
+  def display_selected_killer(killer_selection)
+    Killer.all.each.with_index do |killer, index|
+      if killer_selection.to_i - 1 == index
+        puts "Name:" + " #{killer.name}".colorize(:red)
+        puts "Bio:" + " #{killer.bio}".colorize(:green)
+      end
+    end
+  end
+
+  def display_all_killers
+    Killer.all.each.with_index do |killer, index|
+      puts "#{index + 1}." + " #{killer.name}".colorize(:red)
       puts "---------------------".colorize(:green)
-      counter += 1
+
     end
   end
 end
