@@ -7,6 +7,8 @@ require 'colorize'
 class CLI
 
   def run
+    make_survivors
+    make_killers
     puts "Welcome to the Dead By Daylight CLI Data Gem. This tool provides access
      to all characters in DBD, their bios, and all available perks.\nWith this\n
      information, you can create your own custom character loadout. Try it now!\n
@@ -14,10 +16,9 @@ class CLI
     puts "1. Survivor\n2. Killer"
     user_input = gets.strip
     if user_input == "1"
-      make_survivors
       display_survivors
     elsif user_input == "2"
-      Scraper.scrape_killers
+      display_killers
     end
   end
 
@@ -26,11 +27,26 @@ class CLI
     Survivor.create_from_scrape(survivor_hash)
   end
 
+  def make_killers
+    killer_hash = Scraper.scrape_killers
+    Killer.create_from_scrape(killer_hash)
+  end
+
   def display_survivors
+    counter = 1
     Survivor.all.each do |survivor|
-      puts "Name:".colorize(:blue) + " #{survivor.name}"
-      puts "Bio:".colorize(:blue) + " #{survivor.bio}"
-      puts "---------------------------------------------------------".colorize(:green)
+      puts "#{counter}." + " #{survivor.name}".colorize(:blue)
+      puts "---------------------".colorize(:green)
+      counter += 1
+    end
+  end
+
+  def display_killers
+    counter = 1
+    Killer.all.each do |killer|
+      puts "#{counter}." + " #{killer.name}".colorize(:blue)
+      puts "---------------------".colorize(:green)
+      counter += 1
     end
   end
 end
