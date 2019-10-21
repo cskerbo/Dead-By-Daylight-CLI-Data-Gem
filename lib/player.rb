@@ -5,13 +5,14 @@ require_relative "cli.rb"
 
 class Player
 
-  attr_accessor :name, :bio, :description
+  attr_accessor :name, :bio, :description, :type
 
   @@all = []
 
-  def initialize(name, bio)
+  def initialize(name, bio, type)
     @name = name
     @bio = bio
+    @type = type
     @@all << self
   end
 

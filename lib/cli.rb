@@ -22,6 +22,7 @@ class CLI
     selection = gets.strip
     display_character_selection(selection)
     puts "Select the 4 perks you would like" + " #{@@character.name} ".colorize(:yellow) + "to have:"
+    puts @@character.type
   end
 
   def make_survivors
@@ -48,8 +49,8 @@ class CLI
     end
   end
 
-  def create_player(name, bio)
-    @@character = Player.new(name, bio)
+  def create_player(name, bio, type)
+    @@character = Player.new(name, bio, type)
   end
 
   def display_character_selection(selection)
@@ -66,7 +67,7 @@ class CLI
             puts "Would you like to select this survivor? Enter 'Y' to confirm, 'N' to go back."
             confirmation = gets.strip
             if confirmation == "Y"
-              create_player("#{survivor.name}", "#{survivor.bio}")
+              create_player("#{survivor.name}", "#{survivor.bio}", "survivor")
             end
           end
         end
@@ -81,12 +82,15 @@ class CLI
             puts "Would you like to select this killer? Enter 'Y' to confirm, 'N' to go back."
             confirmation = gets.strip
             if confirmation == "Y"
-              create_player("#{killer.name}", "#{killer.bio}")
+              create_player("#{killer.name}", "#{killer.bio}", "killer")
             end
           end
         end
       end
     end
+  end
 
-end
+  def display_perks
+    if @@character.type == "survivor"
+
 end
