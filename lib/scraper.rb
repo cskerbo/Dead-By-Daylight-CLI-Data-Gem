@@ -1,3 +1,6 @@
+require_relative "../lib/cli.rb"
+require_relative "../lib/survivor.rb"
+
 require 'nokogiri'
 require 'open-uri'
 require 'pry'
@@ -62,9 +65,9 @@ end
     #key, value map as loop
     perk_extract.each do |item|
       perk_name_extract = item.css('table.wikitable.sortable tr th[2] a[1]')
-      perk_name = perk_name_extract.map {|name| name.attribute('title').text}
+      perk_name = perk_name_extract.map {|name| name.attribute('title').text.gsub("\n", "")}
       perk_description_extract = item.css('table.wikitable.sortable tbody tr td')
-      perk_description = perk_description_extract.map {|description| description.text}
+      perk_description = perk_description_extract.map {|description| description.text.gsub("\n", "")}
       perk_hash = Hash[perk_name.zip(perk_description.map {|i| i.include?(',') ? (i.split /, /) : i})]
       perk_list = perk_hash.each do |name, description|
         perk_complete = {:name => name, :description => description}
@@ -76,5 +79,4 @@ end
     #survivor_perk_names = survivor_perks.each {|k, v| "#{k[:name]}"}
     killer_perks = all_perks[71...133]
   end
-  scrape_perks
 end
