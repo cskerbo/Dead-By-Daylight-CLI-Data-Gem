@@ -30,8 +30,6 @@ class Scraper
   survivor_hash
 end
 
-
-
   def self.scrape_killers
     page = Nokogiri::HTML(open("https://deadbydaylight.gamepedia.com/Dead_by_Daylight_Wiki"))
     killers = []

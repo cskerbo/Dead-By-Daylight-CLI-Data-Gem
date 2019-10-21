@@ -18,7 +18,6 @@ class Killer
     end
   end
 
-
   def self.all
     @@all
   end

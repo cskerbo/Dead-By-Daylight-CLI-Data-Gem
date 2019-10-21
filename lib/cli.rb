@@ -1,10 +1,15 @@
 require_relative "scraper.rb"
 require_relative "survivor.rb"
 require_relative "killer.rb"
+require_relative "player.rb"
 require 'colorize'
 
 
 class CLI
+
+  attr_accessor :name, :bio, :description
+
+  @@character = []
 
   def run
     make_survivors
@@ -15,13 +20,8 @@ class CLI
      Please select either survivor or killer."
     puts "1. Survivor\n".colorize(:blue) + "2. Killer".colorize(:red)
     selection = gets.strip
-    confirmation = "N"
-    while confirmation == "N"
-      display_character_selection(selection)
-      puts "Would you like to select this character? Enter 'Y' to confirm, 'N' to go back."
-      confirmation = gets.strip
-    end
-    puts "Accepted"
+    display_character_selection(selection)
+    puts "Select the 4 perks you would like" + " #{@@character.name} ".colorize(:yellow) + "to have:"
   end
 
   def make_survivors
@@ -41,35 +41,52 @@ class CLI
     end
   end
 
-  def display_character_selection(selection)
-    final_selection = "N"
-    if selection == "1"
-      display_all_survivors
-      puts "Enter the number of the survivor you would like to learn more about:"
-      survivor_selection = gets.strip
-      Survivor.all.each.with_index do |survivor, index|
-        if survivor_selection.to_i - 1 == index
-          puts "Name:" + " #{survivor.name}".colorize(:blue)
-          puts "Bio:" + " #{survivor.bio}".colorize(:green)
-        end
-      end
-    elsif selection == "2"
-      display_all_killers
-      puts "Enter the number of the killer you would like to learn more about:"
-      killer_selection = gets.strip
-      Killer.all.each.with_index do |killer, index|
-        if killer_selection.to_i - 1 == index
-          puts "Name:" + " #{killer.name}".colorize(:red)
-          puts "Bio:" + " #{killer.bio}".colorize(:green)
-        end
-      end
-    end
-  end
-
   def display_all_killers
     Killer.all.each.with_index do |killer, index|
       puts "#{index + 1}." + " #{killer.name}".colorize(:red)
       puts "---------------------".colorize(:green)
     end
   end
+
+  def create_player(name, bio)
+    @@character = Player.new(name, bio)
+  end
+
+  def display_character_selection(selection)
+    confirmation = "N"
+    while confirmation == "N"
+      if selection == "1"
+        display_all_survivors
+        puts "Enter the number of the survivor you would like to learn more about:"
+        survivor_selection = gets.strip
+        Survivor.all.each.with_index do |survivor, index|
+          if survivor_selection.to_i - 1 == index
+            puts "Name:" + " #{survivor.name}".colorize(:blue)
+            puts "Bio:" + " #{survivor.bio}".colorize(:green)
+            puts "Would you like to select this survivor? Enter 'Y' to confirm, 'N' to go back."
+            confirmation = gets.strip
+            if confirmation == "Y"
+              create_player("#{survivor.name}", "#{survivor.bio}")
+            end
+          end
+        end
+      elsif selection == "2"
+        display_all_killers
+        puts "Enter the number of the killer you would like to learn more about:"
+        killer_selection = gets.strip
+        Killer.all.each.with_index do |killer, index|
+          if killer_selection.to_i - 1 == index
+            puts "Name:" + " #{killer.name}".colorize(:red)
+            puts "Bio:" + " #{killer.bio}".colorize(:green)
+            puts "Would you like to select this killer? Enter 'Y' to confirm, 'N' to go back."
+            confirmation = gets.strip
+            if confirmation == "Y"
+              create_player("#{killer.name}", "#{killer.bio}")
+            end
+          end
+        end
+      end
+    end
+
+end
 end
