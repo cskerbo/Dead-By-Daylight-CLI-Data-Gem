@@ -2,6 +2,7 @@ require_relative "scraper.rb"
 require_relative "survivor.rb"
 require_relative "killer.rb"
 require_relative "player.rb"
+require_relative "perks.rb"
 require 'colorize'
 
 
@@ -14,6 +15,7 @@ class CLI
   def run
     make_survivors
     make_killers
+    make_perks
     puts "Welcome to the Dead By Daylight CLI Data Gem. This tool provides access
      to all characters in DBD, their bios, and all available perks.\nWith this\n
      information, you can create your own custom character loadout. Try it now!\n
@@ -22,7 +24,7 @@ class CLI
     selection = gets.strip
     display_character_selection(selection)
     puts "Select the 4 perks you would like" + " #{@@character.name} ".colorize(:yellow) + "to have:"
-    puts @@character.type
+    puts display_perks
   end
 
   def make_survivors
@@ -33,6 +35,11 @@ class CLI
   def make_killers
     killer_hash = Scraper.scrape_killers
     Killer.create_from_scrape(killer_hash)
+  end
+
+  def make_perks
+    perk_hash = Scraper.scrape_perks
+    Perks.create_from_scrape(perk_hash)
   end
 
   def display_all_survivors
@@ -91,6 +98,6 @@ class CLI
   end
 
   def display_perks
-    if @@character.type == "survivor"
-
+    Perks.all
+  end
 end

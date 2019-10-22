@@ -72,9 +72,8 @@ end
         all_perks << perk_complete
       end
     end
-    survivor_perks = all_perks[0...70]
+    all_perks
     #move to CLI when needed
     #survivor_perk_names = survivor_perks.each {|k, v| "#{k[:name]}"}
-    killer_perks = all_perks[71...133]
   end
 end
