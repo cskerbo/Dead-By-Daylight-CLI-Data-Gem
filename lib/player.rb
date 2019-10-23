@@ -18,7 +18,7 @@ class Player
   end
 
   def add_perk(perk)
-    perk.player = self unless perk.player
+
     perks << perk unless perks.include?(perk)
   end
 
