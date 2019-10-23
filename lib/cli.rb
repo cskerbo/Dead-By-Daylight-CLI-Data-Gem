@@ -23,11 +23,12 @@ class CLI
     puts "1. Survivor\n".colorize(:blue) + "2. Killer".colorize(:red)
     selection = gets.strip
     character_selection(selection)
-    puts "Here is a list of available perks for" + " #{@@character.name}".colorize(:yellow) + ":"
+    if @@character.type == "survivor"
+      display_survivor_perks
+    elsif @@character.type == "killer"
+      display_killer_perks
+    end
     perk_selection
-    puts "#{@@character.name} ".colorize(:yellow) + "can have up to 4 perks in their loadout. "
-    puts "Enter the number of the perk you are interested in to view perk details and add it to your loadout:"
-
 
   end
 
@@ -60,23 +61,51 @@ class CLI
     end
   end
 
-  def perk_selection
+  def display_survivor_perks
+    Perks.all.each.with_index do |perk, index|
+      if perk.count <= 70
+        puts "#{index + 1}." + " #{perk.name}".colorize(:yellow)
+        puts "---------------------".colorize(:green)
+      end
+    end
+  end
+
+  def display_killer_perks
     counter = 1
     Perks.all.each.with_index do |perk, index|
-      if @@character.type == "survivor"
-        if perk.count <= 70
-          puts "#{index + 1}." + " #{perk.name}".colorize(:yellow)
-          puts "---------------------".colorize(:green)
-        end
-      elsif @@character.type == "killer"
-        if perk.count > 70
-          puts "#{counter}." + " #{perk.name}".colorize(:yellow)
-          puts "---------------------".colorize(:green)
-          counter +=1
+      if perk.count > 70
+        puts "#{counter}." + " #{perk.name}".colorize(:yellow)
+        puts "---------------------".colorize(:green)
+        counter +=1
+      end
+    end
+  end
+
+  def perk_selection
+    puts "Here is a list of available perks for" + " #{@@character.name}".colorize(:yellow) + ":"
+    puts "#{@@character.name} ".colorize(:yellow) + "can have up to 4 perks in their loadout."
+    puts "Enter the number of the perk you are interested in to view perk details and add it to your loadout:"
+    confirmation = "N"
+    perk_selection = gets.strip
+    while confirmation == "N"
+      Perks.all.each.with_index do |perk, index|
+        if @@character.type == "survivor"
+          if perk_selection.to_i - 1 == index
+            puts "Name:" + " #{perk.name}".colorize(:blue)
+            puts "Description:" + " #{perk.description}".colorize(:green)
+            puts "Would you like to add this perk to your loadout? Enter 'Y' to confirm, 'N' to go back."
+            confirmation = gets.strip
+          end
+        elsif @@character.type == "killer"
+          if perk_selection.to_i - 1 + 70 == index
+            puts "Name:" + " #{perk.name}".colorize(:blue)
+            puts "Description:" + " #{perk.description}".colorize(:green)
+            puts "Would you like to add this perk to your loadout? Enter 'Y' to confirm, 'N' to go back."
+            confirmation = gets.strip
+          end
         end
       end
     end
-
   end
 
   def create_player(name, bio, type)
