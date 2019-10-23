@@ -56,11 +56,10 @@ end
   def self.scrape_perks
     page = Nokogiri::HTML(open("https://deadbydaylight.gamepedia.com/Perks"))
     all_perks = []
-    survivor_perks = []
-    killer_perks = []
+
 
     perk_extract = page.css('div.mw-parser-output')
-    #key, value map as loop
+    counter = 1
     perk_extract.each do |item|
       perk_name_extract = item.css('table.wikitable.sortable tr th[2] a[1]')
       perk_name = perk_name_extract.map {|name| name.attribute('title').text.gsub("\n", "")}
@@ -68,8 +67,9 @@ end
       perk_description = perk_description_extract.map {|description| description.text.gsub("\n", "")}
       perk_hash = Hash[perk_name.zip(perk_description.map {|i| i.include?(',') ? (i.split /, /) : i})]
       perk_list = perk_hash.each do |name, description|
-        perk_complete = {:name => name, :description => description}
+        perk_complete = {:name => name, :description => description, :count => counter}
         all_perks << perk_complete
+        counter += 1
       end
     end
     all_perks

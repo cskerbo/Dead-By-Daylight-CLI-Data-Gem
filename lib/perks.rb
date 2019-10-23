@@ -3,7 +3,7 @@ require_relative "../lib/cli.rb"
 
 class Perks
 
-  attr_accessor :name, :description
+  attr_accessor :name, :description, :count
 
   @@all = []
 
@@ -12,8 +12,8 @@ class Perks
     @@all << self
   end
 
-  def self.create_from_scrape(all_perks)
-    all_perks.each do |perk|
+  def self.create_from_scrape(perk_hash)
+    perk_hash.each do |perk|
       self.new(perk)
     end
   end

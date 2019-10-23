@@ -24,7 +24,7 @@ class CLI
     selection = gets.strip
     display_character_selection(selection)
     puts "Select the 4 perks you would like" + " #{@@character.name} ".colorize(:yellow) + "to have:"
-    puts display_perks
+    display_all_perks
   end
 
   def make_survivors
@@ -52,6 +52,13 @@ class CLI
   def display_all_killers
     Killer.all.each.with_index do |killer, index|
       puts "#{index + 1}." + " #{killer.name}".colorize(:red)
+      puts "---------------------".colorize(:green)
+    end
+  end
+
+  def display_all_perks
+    Perks.all.each.with_index do |perk, index|
+      puts "#{index + 1}." + " #{perk.name}".colorize(:yellow)
       puts "---------------------".colorize(:green)
     end
   end
@@ -97,7 +104,5 @@ class CLI
     end
   end
 
-  def display_perks
-    Perks.all
-  end
+
 end
