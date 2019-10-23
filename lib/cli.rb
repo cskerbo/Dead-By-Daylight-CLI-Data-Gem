@@ -23,11 +23,6 @@ class CLI
     puts "1. Survivor\n".colorize(:blue) + "2. Killer".colorize(:red)
     selection = gets.strip
     character_selection(selection)
-    if @@character.type == "survivor"
-      display_survivor_perks
-    elsif @@character.type == "killer"
-      display_killer_perks
-    end
     perk_selection
 
   end
@@ -63,7 +58,7 @@ class CLI
 
   def display_survivor_perks
     Perks.all.each.with_index do |perk, index|
-      if perk.count <= 70
+      if perk.count <= 71
         puts "#{index + 1}." + " #{perk.name}".colorize(:yellow)
         puts "---------------------".colorize(:green)
       end
@@ -73,7 +68,7 @@ class CLI
   def display_killer_perks
     counter = 1
     Perks.all.each.with_index do |perk, index|
-      if perk.count > 70
+      if perk.count > 71
         puts "#{counter}." + " #{perk.name}".colorize(:yellow)
         puts "---------------------".colorize(:green)
         counter +=1
@@ -82,26 +77,32 @@ class CLI
   end
 
   def perk_selection
-    puts "Here is a list of available perks for" + " #{@@character.name}".colorize(:yellow) + ":"
-    puts "#{@@character.name} ".colorize(:yellow) + "can have up to 4 perks in their loadout."
-    puts "Enter the number of the perk you are interested in to view perk details and add it to your loadout:"
     confirmation = "N"
-    perk_selection = gets.strip
+    perk_count = 4 #can I tie this into count of the perk array instead?#
     while confirmation == "N"
+      if @@character.type == "survivor"
+        display_survivor_perks
+      elsif @@character.type == "killer"
+        display_killer_perks
+      end
+      puts "Here is a list of available perks for" + " #{@@character.name}".colorize(:yellow) + ":"
+      puts "#{@@character.name} ".colorize(:yellow) + "can have up to 4 perks in their loadout."
+      puts "You currently have 4 perks left to add to you loadout. Enter the number of the perk you are interested in to view perk details and add it to your loadout"
+      perk_selection = gets.strip
       Perks.all.each.with_index do |perk, index|
         if @@character.type == "survivor"
           if perk_selection.to_i - 1 == index
             puts "Name:" + " #{perk.name}".colorize(:blue)
             puts "Description:" + " #{perk.description}".colorize(:green)
             puts "Would you like to add this perk to your loadout? Enter 'Y' to confirm, 'N' to go back."
-            confirmation = gets.strip
+            confirmation = gets.strip.upcase
           end
         elsif @@character.type == "killer"
-          if perk_selection.to_i - 1 + 70 == index
+          if perk_selection.to_i - 1 + 71 == index
             puts "Name:" + " #{perk.name}".colorize(:blue)
             puts "Description:" + " #{perk.description}".colorize(:green)
             puts "Would you like to add this perk to your loadout? Enter 'Y' to confirm, 'N' to go back."
-            confirmation = gets.strip
+            confirmation = gets.strip.upcase
           end
         end
       end
@@ -124,12 +125,12 @@ class CLI
             puts "Name:" + " #{survivor.name}".colorize(:blue)
             puts "Bio:" + " #{survivor.bio}".colorize(:green)
             puts "Would you like to select this survivor? Enter 'Y' to confirm, 'N' to go back."
-            confirmation = gets.strip
+            confirmation = gets.strip.upcase
             if confirmation == "Y"
-              create_player("#{survivor.name}", "#{survivor.bio}", "survivor")
-            end
+            create_player("#{survivor.name}", "#{survivor.bio}", "survivor")
           end
         end
+      end
       elsif selection == "2"
         display_all_killers
         puts "Enter the number of the killer you would like to learn more about:"
@@ -139,7 +140,7 @@ class CLI
             puts "Name:" + " #{killer.name}".colorize(:red)
             puts "Bio:" + " #{killer.bio}".colorize(:green)
             puts "Would you like to select this killer? Enter 'Y' to confirm, 'N' to go back."
-            confirmation = gets.strip
+            confirmation = gets.strip.upcase
             if confirmation == "Y"
               create_player("#{killer.name}", "#{killer.bio}", "killer")
             end
