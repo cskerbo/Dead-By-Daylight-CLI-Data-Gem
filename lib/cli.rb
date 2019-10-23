@@ -22,9 +22,13 @@ class CLI
      Please select either survivor or killer."
     puts "1. Survivor\n".colorize(:blue) + "2. Killer".colorize(:red)
     selection = gets.strip
-    display_character_selection(selection)
-    puts "Select the 4 perks you would like" + " #{@@character.name} ".colorize(:yellow) + "to have:"
-    display_all_perks
+    character_selection(selection)
+    puts "Here is a list of available perks for" + " #{@@character.name}".colorize(:yellow) + ":"
+    perk_selection
+    puts "#{@@character.name} ".colorize(:yellow) + "can have up to 4 perks in their loadout. "
+    puts "Enter the number of the perk you are interested in to view perk details and add it to your loadout:"
+
+
   end
 
   def make_survivors
@@ -56,18 +60,30 @@ class CLI
     end
   end
 
-  def display_all_perks
+  def perk_selection
+    counter = 1
     Perks.all.each.with_index do |perk, index|
-      puts "#{index + 1}." + " #{perk.name}".colorize(:yellow)
-      puts "---------------------".colorize(:green)
+      if @@character.type == "survivor"
+        if perk.count <= 70
+          puts "#{index + 1}." + " #{perk.name}".colorize(:yellow)
+          puts "---------------------".colorize(:green)
+        end
+      elsif @@character.type == "killer"
+        if perk.count > 70
+          puts "#{counter}." + " #{perk.name}".colorize(:yellow)
+          puts "---------------------".colorize(:green)
+          counter +=1
+        end
+      end
     end
+
   end
 
   def create_player(name, bio, type)
     @@character = Player.new(name, bio, type)
   end
 
-  def display_character_selection(selection)
+  def character_selection(selection)
     confirmation = "N"
     while confirmation == "N"
       if selection == "1"
