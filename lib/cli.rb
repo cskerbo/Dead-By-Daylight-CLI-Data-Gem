@@ -96,6 +96,12 @@ class CLI
             puts "Description:" + " #{perk.description}".colorize(:green)
             puts "Would you like to add this perk to your loadout? Enter 'Y' to confirm, 'N' to go back."
             confirmation = gets.strip.upcase
+            if confirmation == "Y"
+              Player.add_perk(perk)
+              Player.all.each do |x|
+                puts "#{x.name}"
+              end
+            end
           end
         elsif @@character.type == "killer"
           if perk_selection.to_i - 1 + 71 == index

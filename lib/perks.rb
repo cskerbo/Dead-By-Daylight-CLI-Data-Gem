@@ -3,7 +3,7 @@ require_relative "../lib/cli.rb"
 
 class Perks
 
-  attr_accessor :name, :description, :count
+  attr_accessor :name, :description, :count, :player
 
   @@all = []
 
@@ -16,6 +16,11 @@ class Perks
     perk_hash.each do |perk|
       self.new(perk)
     end
+  end
+
+  def player=(player)
+    @player = player
+    player.add_perk(self)
   end
 
 

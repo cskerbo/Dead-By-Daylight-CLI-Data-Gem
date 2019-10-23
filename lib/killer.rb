@@ -3,7 +3,7 @@ require_relative "../lib/cli.rb"
 
 class Killer
 
-  attr_accessor :name, :bio, :description
+  attr_accessor :name, :bio, :description, :perks
 
   @@all = []
 

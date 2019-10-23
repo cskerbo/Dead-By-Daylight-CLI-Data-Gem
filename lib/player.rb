@@ -5,7 +5,7 @@ require_relative "cli.rb"
 
 class Player
 
-  attr_accessor :name, :bio, :description, :type
+  attr_accessor :name, :bio, :description, :type, :perks
 
   @@all = []
 
@@ -13,7 +13,13 @@ class Player
     @name = name
     @bio = bio
     @type = type
+    @perks = []
     @@all << self
+  end
+
+  def add_perk(perk)
+    perk.player = self unless perk.player
+    perks << perk unless perks.include?(perk)
   end
 
   def self.all
