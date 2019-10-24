@@ -18,8 +18,15 @@ class Player
   end
 
   def add_perk(perk)
-
     perks << perk unless perks.include?(perk)
+  end
+
+  def destroy_all
+    all.clear
+  end
+
+  def destroy_perks
+    perks.clear
   end
 
   def self.all

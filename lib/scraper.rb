@@ -57,7 +57,6 @@ end
     page = Nokogiri::HTML(open("https://deadbydaylight.gamepedia.com/Perks"))
     all_perks = []
 
-
     perk_extract = page.css('div.mw-parser-output')
     counter = 1
     perk_extract.each do |item|

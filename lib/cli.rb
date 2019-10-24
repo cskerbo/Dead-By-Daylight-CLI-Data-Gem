@@ -78,8 +78,7 @@ class CLI
 
   def perk_selection
     confirmation = "N"
-    perk_count = 4 #can I tie this into count of the perk array instead?#
-    while perk_count > 0
+    while @@character.perks.count != 4
       if @@character.type == "survivor"
         display_survivor_perks
       elsif @@character.type == "killer"
@@ -87,7 +86,7 @@ class CLI
       end
       puts "Here is a list of available perks for" + " #{@@character.name}".colorize(:yellow) + ":"
       puts "#{@@character.name} ".colorize(:yellow) + "can have up to 4 perks in their loadout."
-      puts "You currently have" + " #{perk_count} " + "perks left to add to you loadout. Enter the number of the perk you are interested in to view perk details and add it to your loadout"
+      puts "You currently have" + " #{4 - @@character.perks.count} " + "perks left to add to you loadout. Enter the number of the perk you are interested in to view perk details and add it to your loadout"
       perk_selection = gets.strip
       Perks.all.each.with_index do |perk, index|
         if @@character.type == "survivor"
@@ -98,7 +97,6 @@ class CLI
             confirmation = gets.strip.upcase
             if confirmation == "Y"
               @@character.add_perk(perk)
-              perk_count -= 1
             else
               perk_selection
             end
@@ -111,13 +109,24 @@ class CLI
             confirmation = gets.strip.upcase
             if confirmation == "Y"
               @@character.add_perk(perk)
-              perk_count -= 1
             else
               perk_selection
             end
           end
         end
       end
+    end
+    puts "Your perk loadout is now full. Here are your selected perks:"
+    @@character.perks.each_with_index do |perk, index|
+      puts "#{index + 1}." + " #{perk.name}".colorize(:yellow)
+      puts "#{perk.description}".colorize(:blue)
+    end
+    puts "Enter [Y] to confirm your loadout, enter [N] to reset your loadout:"
+    loadout_confirmation = gets.strip
+    if loadout_confirmation == "N"
+      @@character.destroy_perks
+      confirmation = "N"
+      perk_selection
     end
   end
 
