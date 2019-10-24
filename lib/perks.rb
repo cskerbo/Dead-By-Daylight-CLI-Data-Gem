@@ -18,12 +18,6 @@ class Perks
     end
   end
 
-#  def player=(player)
-  #  @player = player
-    #player.add_perk(self)
-#  end
-
-
   def self.all
     @@all
   end

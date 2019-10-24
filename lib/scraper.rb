@@ -72,7 +72,5 @@ end
       end
     end
     all_perks
-    #move to CLI when needed
-    #survivor_perk_names = survivor_perks.each {|k, v| "#{k[:name]}"}
   end
 end

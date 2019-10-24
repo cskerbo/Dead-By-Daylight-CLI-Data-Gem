@@ -18,7 +18,6 @@ class Survivor
     end
   end
 
-
   def self.all
     @@all
   end

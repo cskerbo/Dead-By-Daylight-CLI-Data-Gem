@@ -16,16 +16,10 @@ class CLI
     make_survivors
     make_killers
     make_perks
-    puts "Welcome to the Dead By Daylight CLI Data Gem. This tool provides access
-     to all characters in DBD, their bios, and all available perks.\nWith this\n
-     information, you can create your own custom character loadout. Try it now!\n
-     Please select either survivor or killer."
-    puts "1. Survivor\n".colorize(:blue) + "2. Killer".colorize(:blue)
-    selection = gets.strip
-    character_selection(selection)
+    character_selection
     perk_selection
     display_final_character
-    restart_or_exit
+    program_exit
   end
 
   def make_survivors
@@ -139,8 +133,23 @@ class CLI
     @@character = Player.new(name, bio, type)
   end
 
-  def character_selection(selection)
+  def character_selection
     confirmation = "N"
+    puts <<~HEREDOC
+    Welcome to the Dead By Daylight CLI Data Gem!
+    \nDead by Daylight is an asymmetrical multiplayer (4v1) horror game where one player
+    takes on the role of a brutal Killer and the other four play as Survivors.
+    \nYou can choose to be either the Killer or a Survivor. As a Killer, your goal is to sacrifice as many Survivors as possible.
+    As a Survivor, your goal is to escape and avoid being caught and killed.
+    \nSurvivors and killers each have the option to utilize up to four perks in
+    their load-out, that give their characters special abilities.
+    \nThis gem allows you to create your own custom character for Dead By Daylight.
+    You will be able to navigate through all available survivors and killers, their biographies,
+    and perks in order to create your ideal character for the game!\n
+    HEREDOC
+    puts "To get started, please enter a number for either survivor or killer.\n"
+    puts "1. Survivor\n".colorize(:blue) + "2. Killer".colorize(:blue)
+    selection = gets.strip
     while confirmation == "N"
       if selection == "1"
         display_all_survivors
@@ -154,9 +163,9 @@ class CLI
             confirmation = gets.strip.upcase
             if confirmation == "Y"
             create_player("#{survivor.name}", "#{survivor.bio}", "Survivor")
+            end
           end
         end
-      end
       elsif selection == "2"
         display_all_killers
         puts "Enter the number of the killer you would like to learn more about:"
@@ -176,13 +185,13 @@ class CLI
     end
   end
 
-  def restart_or_exit
-    puts "Enter 'restart' to create a new character, or 'exit' to leave:"
+  def program_exit
+    puts "Your" + " #{@@character.type} ".colorize(:blue) + "is sure to win with this loadout!"
+    puts "Test out different characters and builds to see what works best for you in your games."
+    puts "Type 'exit' to quit the program:"
     confirmation = gets.strip
-    while confirmation != "restart" || confirmation != "exit"
-      if confirmation == "restart"
-        run
-      elsif confirmation == "exit"
+    while confirmation != "exit"
+      if confirmation == "exit"
         exit!
       else
         puts "You have entered an invalid selection, try again!"
