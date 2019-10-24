@@ -25,10 +25,6 @@ class Player
     all.clear
   end
 
-  def destroy_perks
-    perks.clear
-  end
-
   def self.all
     @@all
   end

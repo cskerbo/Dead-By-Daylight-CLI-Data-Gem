@@ -20,11 +20,12 @@ class CLI
      to all characters in DBD, their bios, and all available perks.\nWith this\n
      information, you can create your own custom character loadout. Try it now!\n
      Please select either survivor or killer."
-    puts "1. Survivor\n".colorize(:blue) + "2. Killer".colorize(:red)
+    puts "1. Survivor\n".colorize(:blue) + "2. Killer".colorize(:blue)
     selection = gets.strip
     character_selection(selection)
     perk_selection
-
+    display_final_character
+    restart_or_exit
   end
 
   def make_survivors
@@ -51,7 +52,7 @@ class CLI
 
   def display_all_killers
     Killer.all.each.with_index do |killer, index|
-      puts "#{index + 1}." + " #{killer.name}".colorize(:red)
+      puts "#{index + 1}." + " #{killer.name}".colorize(:blue)
       puts "---------------------".colorize(:green)
     end
   end
@@ -76,23 +77,39 @@ class CLI
     end
   end
 
+  def display_final_character
+    puts "Your perk loadout is now full and your" + " #{@@character.type} ".colorize(:blue) + "is complete!"
+    puts "Here is your complete character summary:"
+    puts "----------------------------------------------------------------------"
+    Player.all.each do |character|
+      puts "Name:".colorize(:red) + " #{character.name}".colorize(:blue)
+      puts "Bio:".colorize(:red) + " #{character.bio}".colorize(:green)
+      puts "Perk Loadout:".colorize(:red)
+      character.perks.each_with_index do |perk, index|
+        puts "#{index + 1}. " + "#{perk.name}".colorize(:yellow)
+        puts "#{perk.description}".colorize(:cyan)
+      end
+      puts "--------------------------------------------------------------------"
+    end
+  end
+
   def perk_selection
     confirmation = "N"
     while @@character.perks.count != 4
-      if @@character.type == "survivor"
+      if @@character.type == "Survivor"
         display_survivor_perks
-      elsif @@character.type == "killer"
+      elsif @@character.type == "Killer"
         display_killer_perks
       end
-      puts "Here is a list of available perks for" + " #{@@character.name}".colorize(:yellow) + ":"
-      puts "#{@@character.name} ".colorize(:yellow) + "can have up to 4 perks in their loadout."
-      puts "You currently have" + " #{4 - @@character.perks.count} " + "perks left to add to you loadout. Enter the number of the perk you are interested in to view perk details and add it to your loadout"
+      puts "#{@@character.name} ".colorize(:blue) + "can have up to 4 perks in their loadout."
+      puts "You currently have" + " #{4 - @@character.perks.count} ".colorize(:red) + "perks left to add to your loadout."
+      puts "Enter the number of the perk you are interested in from the list above to view perk details and add it to your loadout:"
       perk_selection = gets.strip
       Perks.all.each.with_index do |perk, index|
-        if @@character.type == "survivor"
+        if @@character.type == "Survivor"
           if perk_selection.to_i - 1 == index
-            puts "Name:" + " #{perk.name}".colorize(:blue)
-            puts "Description:" + " #{perk.description}".colorize(:green)
+            puts "Name:".colorize(:red) + " #{perk.name}".colorize(:yellow)
+            puts "Description:".colorize(:red) + " #{perk.description}".colorize(:cyan)
             puts "Would you like to add this perk to your loadout? Enter 'Y' to confirm, 'N' to go back."
             confirmation = gets.strip.upcase
             if confirmation == "Y"
@@ -101,7 +118,7 @@ class CLI
               perk_selection
             end
           end
-        elsif @@character.type == "killer"
+        elsif @@character.type == "Killer"
           if perk_selection.to_i - 1 + 71 == index
             puts "Name:" + " #{perk.name}".colorize(:blue)
             puts "Description:" + " #{perk.description}".colorize(:green)
@@ -115,18 +132,6 @@ class CLI
           end
         end
       end
-    end
-    puts "Your perk loadout is now full. Here are your selected perks:"
-    @@character.perks.each_with_index do |perk, index|
-      puts "#{index + 1}." + " #{perk.name}".colorize(:yellow)
-      puts "#{perk.description}".colorize(:blue)
-    end
-    puts "Enter [Y] to confirm your loadout, enter [N] to reset your loadout:"
-    loadout_confirmation = gets.strip
-    if loadout_confirmation == "N"
-      @@character.destroy_perks
-      confirmation = "N"
-      perk_selection
     end
   end
 
@@ -143,12 +148,12 @@ class CLI
         survivor_selection = gets.strip
         Survivor.all.each.with_index do |survivor, index|
           if survivor_selection.to_i - 1 == index
-            puts "Name:" + " #{survivor.name}".colorize(:blue)
-            puts "Bio:" + " #{survivor.bio}".colorize(:green)
+            puts "Name:".colorize(:red) + " #{survivor.name}".colorize(:blue)
+            puts "Bio:".colorize(:red) + " #{survivor.bio}".colorize(:green)
             puts "Would you like to select this survivor? Enter 'Y' to confirm, 'N' to go back."
             confirmation = gets.strip.upcase
             if confirmation == "Y"
-            create_player("#{survivor.name}", "#{survivor.bio}", "survivor")
+            create_player("#{survivor.name}", "#{survivor.bio}", "Survivor")
           end
         end
       end
@@ -163,7 +168,7 @@ class CLI
             puts "Would you like to select this killer? Enter 'Y' to confirm, 'N' to go back."
             confirmation = gets.strip.upcase
             if confirmation == "Y"
-              create_player("#{killer.name}", "#{killer.bio}", "killer")
+              create_player("#{killer.name}", "#{killer.bio}", "Killer")
             end
           end
         end
@@ -171,5 +176,18 @@ class CLI
     end
   end
 
-
+  def restart_or_exit
+    puts "Enter 'restart' to create a new character, or 'exit' to leave:"
+    confirmation = gets.strip
+    while confirmation != "restart" || confirmation != "exit"
+      if confirmation == "restart"
+        run
+      elsif confirmation == "exit"
+        exit!
+      else
+        puts "You have entered an invalid selection, try again!"
+        confirmation = gets.strip
+      end
+    end
+  end
 end
