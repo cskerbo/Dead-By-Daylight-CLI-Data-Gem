@@ -1,28 +1,20 @@
-# DBD
+# Dead By Daylight CLI
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/DBD`. To experiment with that code, run `bin/console` for an interactive prompt.
+This Ruby Gem provides a CLI to view character and perk information for all available Survivors and Killers in the game Dead By Daylight, as per the Official Dead By Daylight Wiki.
 
-TODO: Delete this and the text above, and describe your gem
+The interface will guide you through selection of a Survivor or Killer, allow you to view their biographies, show you available perks with descriptions, and allow you to create a full character loadout to review.
+
+Put your Ruby code in the file `lib/DBD`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'DBD'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install DBD
+  $ gem install DBD
 
 ## Usage
 
-TODO: Write usage instructions here
+Type the below and follow the on screen prompts.
+
+  $ dead-by-daylight
 
 ## Development
 

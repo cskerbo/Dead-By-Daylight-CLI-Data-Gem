@@ -173,6 +173,9 @@ class DBD::CLI
             end
           end
         end
+      else
+        puts"You have entered an invalid selection, try again!"
+        selection = gets.strip
       end
     end
   end
