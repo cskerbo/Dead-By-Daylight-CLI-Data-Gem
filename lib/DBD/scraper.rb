@@ -1,11 +1,4 @@
-require_relative "../lib/cli.rb"
-require_relative "../lib/survivor.rb"
-
-require 'nokogiri'
-require 'open-uri'
-require 'pry'
-
-class Scraper
+class DBD::Scraper
 
   def self.scrape_survivors
     page = Nokogiri::HTML(open("https://deadbydaylight.gamepedia.com/Survivors"))

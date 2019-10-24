@@ -1,7 +1,4 @@
-require_relative "../lib/scraper.rb"
-require_relative "../lib/cli.rb"
-
-class Killer
+class DBD::Killer
 
   attr_accessor :name, :bio, :description, :perks
 

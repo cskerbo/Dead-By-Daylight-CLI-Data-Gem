@@ -1,7 +1,4 @@
-require_relative "../lib/scraper.rb"
-require_relative "../lib/cli.rb"
-
-class Perks
+class DBD::Perks
 
   attr_accessor :name, :description, :count, :player
 

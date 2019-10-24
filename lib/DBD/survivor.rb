@@ -1,7 +1,4 @@
-require_relative "../lib/scraper.rb"
-require_relative "../lib/cli.rb"
-
-class Survivor
+class DBD::Survivor
 
   attr_accessor :name, :bio, :description
 

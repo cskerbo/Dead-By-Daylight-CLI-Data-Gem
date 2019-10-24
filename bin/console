@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 
 require "bundler/setup"
+require "dead-by-daylight"
 
-require_relative "../lib/cli.rb"
+# You can add fixtures and/or initialization code here to make experimenting
+# with your gem easier. You can also use a different console, if you like.
 
-CLI.new.run
-
-require "pry"
-Pry.start
+#require "pry"
+#Pry.start
 
 require "irb"
 IRB.start(__FILE__)

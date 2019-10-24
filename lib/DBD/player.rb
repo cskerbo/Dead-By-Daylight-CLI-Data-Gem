@@ -1,9 +1,4 @@
-require_relative "scraper.rb"
-require_relative "survivor.rb"
-require_relative "killer.rb"
-require_relative "cli.rb"
-
-class Player
+class DBD::Player
 
   attr_accessor :name, :bio, :description, :type, :perks
 

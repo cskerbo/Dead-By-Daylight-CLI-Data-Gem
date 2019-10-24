@@ -1,12 +1,4 @@
-require_relative "scraper.rb"
-require_relative "survivor.rb"
-require_relative "killer.rb"
-require_relative "player.rb"
-require_relative "perks.rb"
-require 'colorize'
-
-
-class CLI
+class DBD::CLI
 
   attr_accessor :name, :bio, :description
 
@@ -23,36 +15,36 @@ class CLI
   end
 
   def make_survivors
-    survivor_hash = Scraper.scrape_survivors
-    Survivor.create_from_scrape(survivor_hash)
+    survivor_hash = DBD::Scraper.scrape_survivors
+    DBD::Survivor.create_from_scrape(survivor_hash)
   end
 
   def make_killers
-    killer_hash = Scraper.scrape_killers
-    Killer.create_from_scrape(killer_hash)
+    killer_hash = DBD::Scraper.scrape_killers
+    DBD::Killer.create_from_scrape(killer_hash)
   end
 
   def make_perks
-    perk_hash = Scraper.scrape_perks
-    Perks.create_from_scrape(perk_hash)
+    perk_hash = DBD::Scraper.scrape_perks
+    DBD::Perks.create_from_scrape(perk_hash)
   end
 
   def display_all_survivors
-    Survivor.all.each.with_index do |survivor, index|
+    DBD::Survivor.all.each.with_index do |survivor, index|
       puts "#{index + 1}." + " #{survivor.name}".colorize(:blue)
       puts "---------------------".colorize(:green)
     end
   end
 
   def display_all_killers
-    Killer.all.each.with_index do |killer, index|
+    DBD::Killer.all.each.with_index do |killer, index|
       puts "#{index + 1}." + " #{killer.name}".colorize(:blue)
       puts "---------------------".colorize(:green)
     end
   end
 
   def display_survivor_perks
-    Perks.all.each.with_index do |perk, index|
+    DBD::Perks.all.each.with_index do |perk, index|
       if perk.count <= 71
         puts "#{index + 1}." + " #{perk.name}".colorize(:yellow)
         puts "---------------------".colorize(:green)
@@ -62,7 +54,7 @@ class CLI
 
   def display_killer_perks
     counter = 1
-    Perks.all.each.with_index do |perk, index|
+    DBD::Perks.all.each.with_index do |perk, index|
       if perk.count > 71
         puts "#{counter}." + " #{perk.name}".colorize(:yellow)
         puts "---------------------".colorize(:green)
@@ -75,7 +67,7 @@ class CLI
     puts "Your perk loadout is now full and your" + " #{@@character.type} ".colorize(:blue) + "is complete!"
     puts "Here is your complete character summary:"
     puts "----------------------------------------------------------------------"
-    Player.all.each do |character|
+    DBD::Player.all.each do |character|
       puts "Name:".colorize(:red) + " #{character.name}".colorize(:blue)
       puts "Bio:".colorize(:red) + " #{character.bio}".colorize(:green)
       puts "Perk Loadout:".colorize(:red)
@@ -99,7 +91,7 @@ class CLI
       puts "You currently have" + " #{4 - @@character.perks.count} ".colorize(:red) + "perks left to add to your loadout."
       puts "Enter the number of the perk you are interested in from the list above to view perk details and add it to your loadout:"
       perk_selection = gets.strip
-      Perks.all.each.with_index do |perk, index|
+      DBD::Perks.all.each.with_index do |perk, index|
         if @@character.type == "Survivor"
           if perk_selection.to_i - 1 == index
             puts "Name:".colorize(:red) + " #{perk.name}".colorize(:yellow)
@@ -130,7 +122,7 @@ class CLI
   end
 
   def create_player(name, bio, type)
-    @@character = Player.new(name, bio, type)
+    @@character = DBD::Player.new(name, bio, type)
   end
 
   def character_selection
@@ -155,7 +147,7 @@ class CLI
         display_all_survivors
         puts "Enter the number of the survivor you would like to learn more about:"
         survivor_selection = gets.strip
-        Survivor.all.each.with_index do |survivor, index|
+        DBD::Survivor.all.each.with_index do |survivor, index|
           if survivor_selection.to_i - 1 == index
             puts "Name:".colorize(:red) + " #{survivor.name}".colorize(:blue)
             puts "Bio:".colorize(:red) + " #{survivor.bio}".colorize(:green)
@@ -170,7 +162,7 @@ class CLI
         display_all_killers
         puts "Enter the number of the killer you would like to learn more about:"
         killer_selection = gets.strip
-        Killer.all.each.with_index do |killer, index|
+        DBD::Killer.all.each.with_index do |killer, index|
           if killer_selection.to_i - 1 == index
             puts "Name:" + " #{killer.name}".colorize(:red)
             puts "Bio:" + " #{killer.bio}".colorize(:green)
