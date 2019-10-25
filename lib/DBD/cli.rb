@@ -7,8 +7,8 @@ class DBD::CLI
   def run
     make_survivors
     make_killers
-    make_perks
     character_selection
+    make_perks
     perk_selection
     display_final_character
     program_exit
