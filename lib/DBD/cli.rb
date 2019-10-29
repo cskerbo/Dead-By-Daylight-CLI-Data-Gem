@@ -93,7 +93,7 @@ class DBD::CLI
       perk_selection = gets.strip
       DBD::Perks.all.each.with_index do |perk, index|
         if @@character.type == "Survivor"
-          if perk_selection.to_i - 1 == index
+          if perk_selection.to_i - 1 == index && perk_selection.to_i <= 71
             puts "Name:".colorize(:red) + " #{perk.name}".colorize(:yellow)
             puts "Description:".colorize(:red) + " #{perk.description}".colorize(:cyan)
             puts "Would you like to add this perk to your loadout? Enter 'Y' to confirm, 'N' to go back."
@@ -105,7 +105,7 @@ class DBD::CLI
             end
           end
         elsif @@character.type == "Killer"
-          if perk_selection.to_i - 1 + 71 == index
+          if perk_selection.to_i + 70 == index && perk_selection.to_i + 70 >= 71
             puts "Name:" + " #{perk.name}".colorize(:blue)
             puts "Description:" + " #{perk.description}".colorize(:green)
             puts "Would you like to add this perk to your loadout? Enter 'Y' to confirm, 'N' to go back."
